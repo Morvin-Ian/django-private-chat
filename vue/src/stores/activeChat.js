@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { baseUrl } from "./auth";
+import { messageUrl } from "./auth";
 
 export const useActiveChatStore = defineStore("activeChat", {
     state: () => {

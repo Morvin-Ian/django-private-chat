@@ -1,8 +1,8 @@
 // store/auth.js
 import { defineStore } from "pinia";
-export const baseUrl = "http://127.0.0.1:8000/api/messages";
-export const authUrl = "http://127.0.0.1:8000/api/auth";
 export const base = "http://127.0.0.1:8000"
+export const messageUrl = "/api/messages";
+export const authUrl = "/api/auth";
 
 
 export const useAuthStore = defineStore({

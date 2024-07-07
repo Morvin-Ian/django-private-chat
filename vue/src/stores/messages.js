@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { baseUrl } from './auth';
+import { messageUrl } from './auth';
 
 export const useMessagesStore = defineStore({
   id: 'messages',
@@ -10,7 +10,7 @@ export const useMessagesStore = defineStore({
   actions: {
     async fetchMessages(access_token) {
       try {
-        const messagesUrl = `${baseUrl}/list/`;
+        const messagesUrl = `${messageUrl}/list/`;
         const response = await fetch(messagesUrl, {
           headers: { Authorization: `Bearer ${access_token}` },
         });
@@ -31,7 +31,7 @@ export const useMessagesStore = defineStore({
 
     async updateMessageRead(access_token, dialog) {
       try {
-        const messagesReadUrl = `${baseUrl}/read/`;
+        const messagesReadUrl = `${messageUrl}/read/`;
         const response = await fetch(messagesReadUrl, {
           method: 'PUT',
           headers: {
@@ -61,7 +61,7 @@ export const useMessagesStore = defineStore({
       formData.append('uploaded_by', sender);
 
       try {
-        const response = await fetch(`${baseUrl}/upload_file/`, {
+        const response = await fetch(`${messageUrl}/upload_file/`, {
           method: 'POST',
           body: formData,
           headers: {

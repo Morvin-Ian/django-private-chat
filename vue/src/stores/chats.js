@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { baseUrl } from "./auth";
+import { messageUrl } from "./auth";
 
 
 export const useChatStore = defineStore("chats", {
@@ -13,7 +13,7 @@ export const useChatStore = defineStore("chats", {
         async getChats(access_token) {
             try {
 
-                const response = await fetch(`${baseUrl}/chats/`, {
+                const response = await fetch(`${messageUrl}/chats/`, {
                     headers: {
                         'Authorization': `Bearer ${access_token}`,
                         'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ export const useChatStore = defineStore("chats", {
         },
         async addChat(access_token, uuids) {
 
-            const response = await fetch(`${baseUrl}/api/messages/add_dialog/`, {
+            const response = await fetch(`${messageUrl}/api/messages/add_dialog/`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${access_token}`,

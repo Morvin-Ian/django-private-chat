@@ -1,13 +1,13 @@
 // store/relationships.js
 import { defineStore } from 'pinia';
-import { baseUrl } from './auth';
+import { messageUrl } from './auth';
 
 export const useRelationshipsStore = defineStore({
   id: 'relationships',
   actions: {
     async fetchRelationships(access_token) {
       try {
-        const relationshipsUrl = `${baseUrl}/api/messages/chats/`;
+        const relationshipsUrl = `${messageUrl}/api/messages/chats/`;
         const response = await fetch(relationshipsUrl, {
           headers: { Authorization: `Bearer ${access_token}` },
         });
