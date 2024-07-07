@@ -16,39 +16,26 @@ Django Channels is built on top of the popular asyncio library, which is part of
 
 Some of the key features of Django Channels include:
 
-0. Asynchronous handling of requests
-1. WebSockets support
-2. Custom protocol support
-3. Django integration
+1. Asynchronous handling of requests
+2. WebSockets support
+3. Custom protocol support
+4. Django integration
     
-## Setup
-### Option 1
-    1. git clone 'this repo's link'
-    2. Navigate to the settings.py file in the project folder and set USE_REDIS attribute to False
-    ```
-        # settings.py
-        USE_DOCKER = False
-    ```
-    3. pip install -r requirements.txt
-    4. cd frontend && npm i
+## Run Application
+1. git clone 'this repo's link'
 
-### Run
-    1. python3 manage.py runserver
-    2. On another terminal - cd frontend && npm run dev 
+2. git clone `url`
 
-### Option 2 - Using Docker
+3. python manage.py migrate
 
-1. git clone `url`
+4. make build
 
-2. python manage.py migrate
+5. make up
 
-3. docker-compose build
-
-4. docker-compose up
+6. Access on 0.0.0.0:8080 
     
 
 ![Screenshot from 2024-03-15 16-57-22](https://github.com/Morvin-Ian/django-on-steroids/assets/78966128/8946480a-da9b-455b-9003-08681086b6a7)
-![Screenshot from 2024-03-15 16-56-45](https://github.com/Morvin-Ian/django-on-steroids/assets/78966128/3583faf0-d96f-43a3-9781-70412c134ef3)
 
 
 
