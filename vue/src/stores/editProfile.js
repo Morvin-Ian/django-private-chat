@@ -1,7 +1,7 @@
 // store/profile.js
 import { defineStore } from "pinia";
-import { messageUrl } from "./auth";
-import { useAuthStore } from "./auth";
+import { authUrl, messageUrl } from "./auth";
+import { useAuthStore, base } from "./auth";
 
 const authStore = useAuthStore();
 
@@ -10,7 +10,7 @@ export const useProfileStore = defineStore({
   actions: {
     async editProfile(profileData, access_token) {
       try {
-        const editProfileUrl = `${messageUrl}/api/auth/edit_user/`;
+        const editProfileUrl = `${authUrl}/edit_user/`;
 
         const formDataObject = new FormData();
         formDataObject.append("username", profileData.username);

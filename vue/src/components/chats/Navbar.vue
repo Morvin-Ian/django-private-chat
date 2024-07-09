@@ -14,7 +14,7 @@
             </div>
 
             <div class="add-chat">
-                <font-awesome-icon class="icon" :icon="['fas', 'square-plus']" />
+                <font-awesome-icon @click="addChat" class="icon" :icon="['fas', 'square-plus']" />
             </div>
 
             <div class="more">
@@ -34,7 +34,7 @@
     import DropDown from "@/components/dropdowns/ChatNavDropDown.vue"
     import {defineProps, defineEmits} from "vue"
 
-    const emits = defineEmits(['view-profile', 'view-chat-drop'])
+    const emits = defineEmits(['view-profile', 'view-chat-drop', 'add-chat'])
 
 
     const props = defineProps({
@@ -46,6 +46,10 @@
 
     const setProfile = () => {
         emits('view-profile', true)
+    }
+
+    const addChat = () => {
+        emits('add-chat', true)
     }
 
     const setDropDown = () => {

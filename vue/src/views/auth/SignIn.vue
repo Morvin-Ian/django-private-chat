@@ -8,6 +8,7 @@
         <input type="password" placeholder="Password" v-model="password" required>
         <button type="submit">Login</button>
       </form>
+      <p style="color: white; text-align: center;">Don't have an account? <a href="/sign-up">Sign Up</a></p>
     </div>
   </div>
 </template>
@@ -63,6 +64,7 @@ onMounted(() => {
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 
 input[type="email"],
 input[type="password"],

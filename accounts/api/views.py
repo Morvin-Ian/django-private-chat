@@ -2,6 +2,8 @@ from django.contrib import auth
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect 
 from django.db.models import Q
+from django.db.models import Exists, OuterRef
+
 
 from .serializer import  RegisterSerializer, LoginSerializer
 from accounts.models import User
@@ -68,42 +70,30 @@ class AuthenticationView(GenericAPIView):
         serializer = self.serializer_class(user)
         return Response({"user":serializer.data})
 
-# class GetUsers
+
 class FetchUsers(GenericAPIView):
     """
-    Fetch Users with no relationship with the logged in User.
+    Fetch Users with no relationship with the logged in user.
     """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        response = []
-        users = User.objects.all()
+        existing_dialog = Dialog.objects.filter(
+            Q(sender=OuterRef('pk'), recepient=request.user) |
+            Q(sender=request.user, recepient=OuterRef('pk'))
+        )
 
-        for user in users:
-            if user.profile:
-                profile = user.profile.url
-            else:
-                profile = None
-            
+        users = User.objects.exclude(pk=request.user.pk).annotate(
+            has_dialog=Exists(existing_dialog)
+        ).filter(has_dialog=False).select_related('profile')
 
-            if user != request.user:
-                #Eliminate friends
-                dialogs = Dialog.objects.filter(
-                            Q(sender=user) & Q(recepient=request.user) | 
-                            Q(sender=request.user) & Q(recepient=user)
-                        )
-                
-                if not dialogs:
-                    data = {
-                        "uuid":user.uuid,
-                        "username":user.username,
-                        "email":user.email,
-                        "profile":profile
-                    }
+        response = [{
+            "uuid": user.uuid,
+            "username": user.username,
+            "profile": user.profile.url if user.profile else None
+        } for user in users]
 
-                    response.append(data)
         return Response(response, status=status.HTTP_200_OK)
-
 
 class EditProfile(GenericAPIView):
 
@@ -115,8 +105,6 @@ class EditProfile(GenericAPIView):
         # username = request.data.get('username')
         profile = request.data.get('profile')
         user = request.user
-
-
     
         if email:
             user.email = email

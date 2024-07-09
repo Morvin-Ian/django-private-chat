@@ -1,13 +1,13 @@
 // store/users.js
 import { defineStore } from 'pinia';
-import { messageUrl } from './auth';
+import { base, authUrl } from './auth';
 
 export const useUsersStore = defineStore({
   id: 'users',
   actions: {
     async fetchUsers(access_token) {
       try {
-        const usersApiUrl = `${messageUrl}/api/auth/users/`;
+        const usersApiUrl = `${authUrl}/users/`;
         const response = await fetch(usersApiUrl, {
           headers: { Authorization: `Bearer ${access_token}` },
         });

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { messageUrl } from './auth';
+import { messageUrl, base } from './auth';
 
 export const useMessagesStore = defineStore({
   id: 'messages',

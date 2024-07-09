@@ -1,6 +1,6 @@
 // store/relationships.js
 import { defineStore } from 'pinia';
-import { messageUrl } from './auth';
+import { messageUrl, base } from './auth';
 
 export const useRelationshipsStore = defineStore({
   id: 'relationships',
@@ -20,6 +20,27 @@ export const useRelationshipsStore = defineStore({
         return await response.json();
       } catch (error) {
         console.error('Fetch relationships error:', error);
+        return error.message;
+      }
+    },
+
+    async createRelationships(access_token, data) {
+      try {
+        const response = await fetch(`${messageUrl}/add_dialog/`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${access_token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+          return response.status
+        }
+        return response.status;
+
+      } catch (error) {
         return error.message;
       }
     },

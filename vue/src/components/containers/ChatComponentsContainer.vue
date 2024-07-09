@@ -2,6 +2,7 @@
         <Navbar  
             @view-profile="setProfile" 
             @view-chat-drop="setChatDrop" 
+            @add-chat="addChat"
             :viewChatDrop="viewChatDrop"
         />
         <Search/>
@@ -15,14 +16,21 @@
             :viewProfile="viewProfile" 
             @view-profile="setProfile" 
         />
+
+        <AddChat 
+            :viewAddChat="viewAddChat" 
+            @view-add-chat="addChat" 
+        />
 </template>
 
 <script setup>
     import {ref, defineEmits} from "vue"
     import Navbar from "@/components/chats/Navbar.vue"
     import Search from "@/components/chats/Search.vue"
-    import ChatList from "@/components/chats/ChatsList.vue"
+    import ChatList from "@/components/chats/ChatList.vue"
     import Profile from "@/components/profiles/UserProfile.vue"
+    import AddChat from "@/components/chats/AddChat.vue"
+
 
     const props = defineProps({
         typing:{
@@ -41,11 +49,17 @@
 
     const viewProfile = ref(false);
     const viewChatDrop = ref(false);
+    const viewAddChat = ref(false);
+
 
     const emits = defineEmits(['change-view'])
       
     const setProfile = (profileState) => {
       viewProfile.value = profileState
+    }
+  
+    const addChat = (data) => {
+      viewAddChat.value = data
     }
   
 
