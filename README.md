@@ -1,6 +1,6 @@
 # Django-on-steroids
 
-The project, is focused on a real time chat app utilizing `react` library and `Django` backend.
+The project, is focused on a real time chat app utilizing `vue` library and `Django` backend.
 The api was heavily dependent on `Django restframework`. 
 
 ## Testing
