@@ -3,6 +3,9 @@
 The project, is focused on a real time chat app utilizing `vue` library and `Django` backend.
 The api was heavily dependent on `Django restframework`. 
 
+![Screenshot from 2024-07-12 06-04-31](https://github.com/user-attachments/assets/6399f8de-5f1c-4bb6-b519-b083593a0248)
+
+
 ## Testing
 Unitests have also been imlemented on every app `(apis)`,
 to ensure quality code.
@@ -28,8 +31,6 @@ Some of the key features of Django Channels include:
 4. make up
 5. Access on 0.0.0.0:8080 
     
-
-![Screenshot from 2024-03-15 16-57-22](https://github.com/Morvin-Ian/django-on-steroids/assets/78966128/8946480a-da9b-455b-9003-08681086b6a7)
 
 
 
