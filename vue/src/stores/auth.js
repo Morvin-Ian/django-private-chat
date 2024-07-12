@@ -26,6 +26,7 @@ export const useAuthStore = defineStore({
         if (!response.ok) {
           return data;
         } else {
+          console.log(data)
           localStorage.setItem("user",JSON.stringify(data))
           return data;
 

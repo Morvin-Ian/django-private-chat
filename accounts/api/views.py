@@ -85,7 +85,7 @@ class FetchUsers(GenericAPIView):
 
         users = User.objects.exclude(pk=request.user.pk).annotate(
             has_dialog=Exists(existing_dialog)
-        ).filter(has_dialog=False).select_related('profile')
+        ).filter(has_dialog=False)
 
         response = [{
             "uuid": user.uuid,

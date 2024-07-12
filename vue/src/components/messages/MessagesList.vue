@@ -19,6 +19,7 @@ const chatStore = useChatStore()
 const user = JSON.parse(localStorage.getItem("user"))
 const emits = defineEmits(["typing"])
 
+
 // fetch Messages
 messageStore.fetchMessages(user.token)
 
