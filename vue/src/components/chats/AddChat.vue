@@ -13,7 +13,12 @@
             </div>
         </div>
         <div class="user-list">
-            <div v-for="user in users" :key="user.id" class="user-item">
+            <div
+                v-if="users"
+                v-for="user in users"
+                :key="user.id"
+                class="user-item"
+            >
                 <div class="user-info" v-if="loggedUser.uuid != user.uuid">
                     <img
                         :src="user.profile || defaultProfile"
@@ -33,6 +38,12 @@
                     />
                 </button>
             </div>
+
+            <div v-if="!users">
+                <h4 style="margin-left: 10px" class="user-info">
+                    Wait for more users to join.
+                </h4>
+            </div>
         </div>
     </div>
 </template>
@@ -40,12 +51,14 @@
 <script setup>
 import { defineProps, defineEmits, onMounted, ref } from "vue";
 import { useRelationshipsStore } from "@/stores/relationships";
+import { useChatStore } from "@/stores/chats";
 import defaultProfile from "@/assets/default.jpg";
 import { useToast } from "vue-toastification";
 
 const toast = useToast();
 const emits = defineEmits(["view-add-chat"]);
 const relationshipStore = useRelationshipsStore();
+const chatStore = useChatStore();
 const loggedUser = JSON.parse(localStorage.getItem("user"));
 const users = ref({});
 
@@ -72,6 +85,8 @@ const createRelationship = async (receiver) => {
 
     if (response == 200) {
         fetchUsers();
+        await relationshipStore.fetchRelationships();
+        await chatStore.getChats();
         toast.success("Relationship created succesfully");
     } else {
         toast.error("An error occured");

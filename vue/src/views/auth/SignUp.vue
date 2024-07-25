@@ -52,10 +52,14 @@ const register = async () => {
             password: password.value,
         });
 
-        if (response.token) {
+        if (response.status == 201) {
             router.push("/sign-in");
         } else {
-            error.value = "Email or Username already in Use";
+            if (response.error.username) {
+                error.value = response.error.username[0];
+            } else {
+                error.value = response.error.email[0];
+            }
         }
     }
 };

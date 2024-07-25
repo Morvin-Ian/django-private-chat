@@ -25,7 +25,10 @@ export const useAuthStore = defineStore({
         const response = await instance.post("auth/register/", credentials);
         return { status: response.status, data: response.data };
       } catch (error) {
-        return error;
+        return {
+          status: error.response.status,
+          error: error.response.data,
+        };
       }
     },
   },

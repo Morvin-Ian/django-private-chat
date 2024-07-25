@@ -24,6 +24,7 @@
         </div>
     </div>
 </template>
+console.log(response);
 
 <script setup>
 import { onMounted, ref } from "vue";

@@ -4,10 +4,10 @@ from .models import User
 @admin.register(User)
 class UserRegistration(admin.ModelAdmin):
     list_display = (
+        'username',
         'email',
         'is_staff',
         'is_active',
-        'uuid',
     )
 
     list_filter =['email']

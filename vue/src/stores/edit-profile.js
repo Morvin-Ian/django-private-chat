@@ -4,10 +4,8 @@ import { defineStore } from "pinia";
 export const useProfileStore = defineStore({
   id: "profile",
   actions: {
-    async editProfile(profileData, access_token) {
+    async editProfile(profileData) {
       try {
-        const editProfileUrl = `${authUrl}/edit_user/`;
-
         const formDataObject = new FormData();
         formDataObject.append("username", profileData.username);
         formDataObject.append("email", profileData.email);
