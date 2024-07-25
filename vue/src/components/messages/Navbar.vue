@@ -1,7 +1,15 @@
 <template>
     <div class="nav-container">
         <div class="user-profile">
-            <img @click="setChatProfile" :src="profilePicture" alt="profile" />
+            <img
+                @click="setChatProfile"
+                :src="
+                    chatStore.activeChat.profile
+                        ? `${baseUrl}${chatStore.activeChat.profile}`
+                        : `${defaultPicture}`
+                "
+                alt="profile"
+            />
             <div class="name">
                 <span>{{ chatStore.activeChat.chat }}</span> <br />
                 <!-- <span>{{ receiver }} --- {{ sender }}</span> -->
@@ -58,9 +66,10 @@
 </template>
 
 <script setup>
-import profilePicture from "@/assets/octo.jpg";
+import defaultPicture from "@/assets/default.jpg";
 import DropDown from "@/components/dropdowns/MessageNavDropDown.vue";
 import { useChatStore } from "@/stores/chats.js";
+import { baseUrl } from "@/stores/axios-instance";
 
 const chatStore = useChatStore();
 const user = JSON.parse(localStorage.getItem("user"));

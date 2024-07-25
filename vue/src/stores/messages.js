@@ -8,7 +8,7 @@ export const useMessagesStore = defineStore({
     file: null,
   }),
   actions: {
-    async fetchMessages(access_token) {
+    async fetchMessages() {
       try {
         const response = await instance.get("/messages/list/");
 
@@ -23,10 +23,9 @@ export const useMessagesStore = defineStore({
       }
     },
 
-    async updateMessageRead(access_token, dialog) {
+    async updateMessageRead(dialog) {
       try {
         const response = await instance.put("/messages/read/", { dialog });
-
         if (response.status != 200) {
           throw new Error("Failed to update message read status");
         } else {
@@ -41,7 +40,7 @@ export const useMessagesStore = defineStore({
       this.file = file;
     },
 
-    async sendFile(access_token, file, sender) {
+    async sendFile(file, sender) {
       const formData = new FormData();
       formData.append("file", file, file.name);
       formData.append("uploaded_by", sender);

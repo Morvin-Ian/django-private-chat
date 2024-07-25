@@ -15,6 +15,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useChatStore } from "@/stores/chats.js";
+import { useMessagesStore } from "@/stores/messages";
 import Chat from "@/components/chats/Chat.vue";
 
 const props = defineProps({
@@ -33,10 +34,12 @@ const props = defineProps({
 });
 
 const chatStore = useChatStore();
+const messageStore = useMessagesStore();
 const emits = defineEmits(["change-view"]);
 
 const setActiveChat = (chat) => {
     chatStore.setChat(chat);
+    messageStore.updateMessageRead(chatStore.activeChat.dialog);
     emits("change-view", false);
 };
 

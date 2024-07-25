@@ -33,7 +33,6 @@ export const useRelationshipsStore = defineStore({
         return response.data;
       } catch (error) {
         console.error("Fetch users error:", error);
-        return [];
       }
     },
 

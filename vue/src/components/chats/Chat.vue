@@ -1,22 +1,42 @@
 <template>
     <div class="chat-container">
         <div class="chat-profile">
-            <img :src="chat.profile ? profilePicture : defaultProfile" alt="profile" />
+            <img
+                :src="
+                    chat.profile
+                        ? `${baseUrl}${chat.profile}`
+                        : `${defaultProfile}`
+                "
+                alt="profile"
+            />
         </div>
 
         <div class="chat-details">
             <div>
-                <span class="name">{{ chat.chat }}</span> <br>
+                <span class="name">{{ chat.chat }}</span> <br />
                 <div class="low">
-                    <small v-if="typing && sender != user.uuid && sender == chat.chat_uuid && receiver == user.uuid"
-                        class="last-msg">
-                        <span style="color: rgb(37, 211, 102);">typing...</span>
+                    <small
+                        v-if="
+                            typing &&
+                            sender != user.uuid &&
+                            sender == chat.chat_uuid &&
+                            receiver == user.uuid
+                        "
+                        class="last-msg"
+                    >
+                        <span style="color: rgb(37, 211, 102)">typing...</span>
                     </small>
 
-                    <small v-else class="last-msg">{{ truncateText(chat.last_message) }} </small>
-                    <!-- <small v-if="chat.unread_count != 0" class="unread">{{ chat.unread_count }}</small> -->
-
-                    <!-- <font-awesome-icon class="icon" :icon="['fas', 'chevron-down']" /> -->
+                    <small v-else class="last-msg"
+                        >{{ truncateText(chat.last_message) }}
+                    </small>
+                    <small v-if="chat.unread_count != 0" class="unread">
+                        {{ chat.unread_count }}</small
+                    >
+                    <!-- <font-awesome-icon
+                        class="icon"
+                        :icon="['fas', 'chevron-down']"
+                    /> -->
                 </div>
             </div>
         </div>
@@ -24,17 +44,15 @@
         <div class="last-seen">
             <small v-if="chat.date">{{ formatDateTime(chat.date).date }}</small>
             <small v-else>New Chat</small>
-
         </div>
     </div>
 </template>
 
 <script setup>
-import profilePicture from "@/assets/octo.jpg"
-import defaultProfile from "@/assets/default.jpg"
-import { defineProps } from "vue"
+import defaultProfile from "@/assets/default.jpg";
+import { defineProps } from "vue";
 import { formatDateTime } from "@/utils/helpers";
-
+import { baseUrl } from "@/stores/axios-instance";
 
 const props = defineProps({
     chat: {
@@ -43,29 +61,27 @@ const props = defineProps({
     },
     typing: {
         type: Boolean,
-        required: true
+        required: true,
     },
     sender: {
         type: String,
-        required: false
+        required: false,
     },
     receiver: {
         type: String,
-        required: false
-    }
-})
+        required: false,
+    },
+});
 
-const user = JSON.parse(localStorage.getItem("user"))
+const user = JSON.parse(localStorage.getItem("user"));
 
 const truncateText = (text) => {
     if (!text) {
-        return "Start conversation"
+        return "Start conversation";
     } else {
         return text.length > 20 ? text.substring(0, 20) + " ..." : text;
     }
-}
-
-
+};
 </script>
 
 <style scoped>
@@ -78,23 +94,22 @@ const truncateText = (text) => {
 }
 
 .chat-container:hover {
-    background-color: #202C33;
+    background-color: #202c33;
     cursor: pointer;
 }
 
 .chat-container .last-seen {
     color: #b6b6b6;
     /* color: #25D366; */
-
 }
 
 .unread {
     position: absolute;
-    left: 23%;
+    left: 22.5%;
     background: rgb(37, 211, 102);
     color: #141c20;
-    padding: 5px;
-    border-radius: 50%;
+    padding: 8px;
+    border-radius: 40%;
     font-size: x-small;
     font-weight: bolder;
 }

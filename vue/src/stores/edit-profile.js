@@ -1,5 +1,6 @@
 // store/profile.js
 import { defineStore } from "pinia";
+import { instance } from "./axios-instance";
 
 export const useProfileStore = defineStore({
   id: "profile",
@@ -9,6 +10,7 @@ export const useProfileStore = defineStore({
         const formDataObject = new FormData();
         formDataObject.append("username", profileData.username);
         formDataObject.append("email", profileData.email);
+
         if (profileData.profile) {
           formDataObject.append(
             "profile",
@@ -17,12 +19,10 @@ export const useProfileStore = defineStore({
           );
         }
 
-        const response = await instance.put(
-          "/messages/edit_user",
-          formDataObject,
-        );
+        const response = await instance.put("/auth/edit_user/", formDataObject);
 
-        if (response.status != 200) {
+        if (response.status !== 200) {
+          console.error("Error response:", response.data);
           return response.data;
         } else {
           return response.data;

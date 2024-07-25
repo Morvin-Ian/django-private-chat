@@ -101,6 +101,7 @@ onMounted(() => {
 <style scoped>
 .profile-container {
     position: absolute;
+    border-right: 1px solid rgb(78, 78, 78);
     top: 0%;
     color: #b6b6b6;
     background: #202c33;

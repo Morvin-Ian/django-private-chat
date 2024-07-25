@@ -1,7 +1,15 @@
 <template>
     <div class="nav-container">
         <div class="user-profile">
-            <img @click="setProfile" :src="profilePicture" alt="profile">
+            <img
+                @click="setProfile"
+                :src="
+                    user.profile
+                        ? `${baseUrl}${user.profile}`
+                        : `${profilePicture}`
+                "
+                alt="profile"
+            />
         </div>
 
         <div class="nav-btns">
@@ -14,48 +22,56 @@
             </div>
 
             <div class="add-chat">
-                <font-awesome-icon @click="addChat" class="icon" :icon="['fas', 'square-plus']" />
+                <font-awesome-icon
+                    @click="addChat"
+                    class="icon"
+                    :icon="['fas', 'square-plus']"
+                />
             </div>
 
             <div class="more">
-                <font-awesome-icon @click="setDropDown" class="icon" id="more" :icon="['fas', 'ellipsis-vertical']" />
+                <font-awesome-icon
+                    @click="setDropDown"
+                    class="icon"
+                    id="more"
+                    :icon="['fas', 'ellipsis-vertical']"
+                />
             </div>
         </div>
 
         <div>
-            <DropDown :class="viewChatDrop ? 'drop':'none'" />
+            <DropDown :class="viewChatDrop ? 'drop' : 'none'" />
         </div>
-
     </div>
 </template>
 
 <script setup>
-    import profilePicture from "@/assets/octo.jpg"
-    import DropDown from "@/components/dropdowns/ChatNavDropDown.vue"
-    import {defineProps, defineEmits} from "vue"
+import { defineProps, defineEmits } from "vue";
+import { baseUrl } from "@/stores/axios-instance";
+import profilePicture from "@/assets/default.jpg";
+import DropDown from "@/components/dropdowns/ChatNavDropDown.vue";
 
-    const emits = defineEmits(['view-profile', 'view-chat-drop', 'add-chat'])
+const emits = defineEmits(["view-profile", "view-chat-drop", "add-chat"]);
+let user = JSON.parse(localStorage.getItem("user"));
 
+const props = defineProps({
+    viewChatDrop: {
+        type: Boolean,
+        required: true,
+    },
+});
 
-    const props = defineProps({
-        viewChatDrop:{
-            type:Boolean,
-            required:true
-        }
-    })
+const setProfile = () => {
+    emits("view-profile", true);
+};
 
-    const setProfile = () => {
-        emits('view-profile', true)
-    }
+const addChat = () => {
+    emits("add-chat", true);
+};
 
-    const addChat = () => {
-        emits('add-chat', true)
-    }
-
-    const setDropDown = () => {
-        emits('view-chat-drop', !props.viewChatDrop)
-    }
-
+const setDropDown = () => {
+    emits("view-chat-drop", !props.viewChatDrop);
+};
 </script>
 
 <style scoped>
@@ -64,7 +80,6 @@
     padding: 5px;
     border-radius: 4px;
     background-color: #141c20;
-
 }
 
 .user-profile img {
@@ -77,44 +92,41 @@
     padding: 5px;
 }
 
-.nav-btns{
+.nav-btns {
     flex-basis: 80%;
     display: flex;
     justify-content: end;
     color: #b6b6b6;
     padding: 5px;
     margin-top: 10px;
-
 }
 
-.nav-btns div{
+.nav-btns div {
     margin-left: 15%;
 }
 
-.nav-btns .icon{
+.nav-btns .icon {
     padding: 5px;
     border-radius: 50%;
     transition: background-color 0.5s ease;
 }
 
-#more{
+#more {
     border-radius: 0%;
 }
-.nav-btns div .icon{
+.nav-btns div .icon {
     font-size: large;
     cursor: pointer;
 }
 
-.nav-btns .icon:hover{
+.nav-btns .icon:hover {
     background-color: rgba(65, 65, 65, 0.749);
-
 }
 
-.drop{
-        display: block;
-
-    }
-.none{
-        display: none;
-    }
+.drop {
+    display: block;
+}
+.none {
+    display: none;
+}
 </style>

@@ -22,7 +22,13 @@
                     @change="handleFileChange"
                 />
                 <label for="profile">
-                    <img :src="profilePicture" />
+                    <img
+                        :src="
+                            user.profile
+                                ? `${baseUrl}${user.profile}`
+                                : `${profilePicture}`
+                        "
+                    />
                 </label>
             </div>
 
@@ -34,26 +40,32 @@
                     to your contacts</small
                 >
             </div>
-
             <div class="about">
-                <label class="input-label">About</label> <br />
-                <input class="about-input" type="text" v-model="about" />
+                <label class="input-label">Email</label> <br />
+                <input class="about-input" type="text" v-model="email" />
             </div>
 
             <div class="submit">
-                <button>Edit</button>
+                <button @click.prevent="handleSubmit">Edit</button>
             </div>
         </form>
     </div>
 </template>
 
 <script setup>
-import profilePicture from "@/assets/octo.jpg";
+import profilePicture from "@/assets/default.jpg";
 import { ref, defineProps, defineEmits } from "vue";
+import { useProfileStore } from "@/stores/edit-profile";
+import { baseUrl } from "@/stores/axios-instance";
+import { useToast } from "vue-toastification";
 
-const username = ref("");
-const about = ref("");
 const emits = defineEmits(["view-profile"]);
+const toast = useToast();
+const user = JSON.parse(localStorage.getItem("user"));
+const profileStore = useProfileStore();
+const username = ref(user.username);
+const email = ref(user.email);
+const editedProfile = ref(null);
 
 const props = defineProps({
     viewProfile: {
@@ -67,14 +79,32 @@ const hideProfile = () => {
 };
 
 const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    console.log(file);
+    editedProfile.value = event.target.files[0];
+};
+
+const handleSubmit = async () => {
+    const response = await profileStore.editProfile({
+        username: username.value,
+        email: email.value,
+        profile: editedProfile.value,
+    });
+
+    if (user) {
+        user.profile = response.profile;
+        user.username = response.username;
+        user.email = response.email;
+        localStorage.setItem("user", JSON.stringify(user));
+        toast.success("Profile Updated");
+    } else {
+        toast.error("An Error occured while Updating the Profile ");
+    }
 };
 </script>
 
 <style scoped>
 .profile-container {
     position: absolute;
+    border-right: 1px solid rgb(78, 78, 78);
     top: 0%;
     color: #b6b6b6;
     background: #202c33;

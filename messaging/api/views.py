@@ -14,10 +14,7 @@ from .serializers import UploadedFileSerializer, MessageSerializer
 
 
 class DialogView(GenericAPIView):
-    """
-    Gets the dialogues of a user 
-    """
-
+    """Gets the dialogues of a user"""
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -60,28 +57,20 @@ class DialogView(GenericAPIView):
 
 
 class MessageListView(GenericAPIView):
-
-    """
-    Requests for all messages or creates new 
-    """
-
+    """Requests for all messages or creates new"""
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         messages = Message.objects.filter(
             Q(sender=request.user) | Q(recepient=request.user)
         ).select_related('sender', 'recepient', 'dialog').order_by('created_at')
-        
+
         serializer = MessageSerializer(messages, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CreateDialogView(GenericAPIView):
-    """
-    Creates a dialog between users
-    """
-
-
+    """Creates a dialog between users"""
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -106,9 +95,7 @@ class CreateDialogView(GenericAPIView):
 
 
 class UpdateReadMessages(GenericAPIView):
-    """
-    Update messages to read in a dialog between users
-    """
+    """Update messages to read in a dialog between users"""
 
     def put(self, request):
         dialog_id = request.data.get("dialog")
@@ -131,8 +118,8 @@ class FileUploadView(GenericAPIView):
     def post(self, request):
         uploaded_by_id = request.data.get('uploaded_by')
         file = request.data.get('file')
-        sender = User.objects.get(uuid=uploaded_by_id) 
-        
+        sender = User.objects.get(uuid=uploaded_by_id)
+
         uploaded_file = UploadedFile.objects.create(
             uploaded_by=sender,
             file=file

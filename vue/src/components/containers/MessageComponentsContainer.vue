@@ -86,7 +86,6 @@ const closeChat = (data) => {
 };
 
 onMounted(() => {
-    messageStore.updateMessageRead(chatStore.activeChat.dialog);
     messageStore.fetchMessages();
     chatStore.getChats();
 });
