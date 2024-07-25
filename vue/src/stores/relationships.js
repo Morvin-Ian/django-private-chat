@@ -1,45 +1,51 @@
 // store/relationships.js
-import { defineStore } from 'pinia';
-import { messageUrl, base } from './auth';
+import { defineStore } from "pinia";
+import { instance } from "./axios-instance";
 
 export const useRelationshipsStore = defineStore({
-  id: 'relationships',
+  id: "relationships",
   actions: {
-    async fetchRelationships(access_token) {
+    async fetchRelationships() {
       try {
-        const relationshipsUrl = `${messageUrl}/api/messages/chats/`;
-        const response = await fetch(relationshipsUrl, {
-          headers: { Authorization: `Bearer ${access_token}` },
-        });
+        const response = await instance.get("/messages/chats");
 
-        if (!response.ok) {
+        if (response.status != 200) {
           localStorage.clear();
-          throw new Error('Failed to fetch relationships');
+          throw new Error("Failed to fetch relationships");
+        } else {
+          return await response.data;
         }
-
-        return await response.json();
       } catch (error) {
-        console.error('Fetch relationships error:', error);
+        console.error("Fetch relationships error:", error);
         return error.message;
       }
     },
 
-    async createRelationships(access_token, data) {
+    async fetchUsers() {
       try {
-        const response = await fetch(`${messageUrl}/add_dialog/`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${access_token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-          return response.status
+        const response = await instance.get("/auth/users/");
+        if (response.status != 200) {
+          localStorage.clear();
+          throw new Error("Failed to fetch users");
+          return;
         }
-        return response.status;
 
+        return response.data;
+      } catch (error) {
+        console.error("Fetch users error:", error);
+        return [];
+      }
+    },
+
+    async createRelationships(data) {
+      try {
+        const response = await instance.post("/messages/add_dialog/", data);
+
+        if (response.status != 200) {
+          return response.status;
+        } else {
+          return response.status;
+        }
       } catch (error) {
         return error.message;
       }

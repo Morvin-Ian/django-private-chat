@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect 
+from django.views.decorators.csrf import csrf_protect
 from django.db.models import Q
 from django.db.models import Exists, OuterRef
 
@@ -12,6 +12,7 @@ from messaging.models import Dialog
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
+
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import  MultiPartParser,FormParser
 
@@ -46,17 +47,17 @@ class LoginView(GenericAPIView):
         email = request.data.get('email', None)
         password = request.data.get('password', None)
         if password and email:
-            user = auth.authenticate(email=request.data['email'], password=request.data['password'])   
+            user = auth.authenticate(email=request.data['email'], password=request.data['password'])
         else:
-            return Response({"error":"Bad Request"}, status=status.HTTP_400_BAD_REQUEST)   
+            return Response({"error":"Bad Request"}, status=status.HTTP_400_BAD_REQUEST)
         if user is not None:
             serializer = self.serializer_class(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         else:
             return Response({"error":"Invalid Credentials"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        
+
+
 
 class AuthenticationView(GenericAPIView):
     """
@@ -105,7 +106,7 @@ class EditProfile(GenericAPIView):
         # username = request.data.get('username')
         profile = request.data.get('profile')
         user = request.user
-    
+
         if email:
             user.email = email
         # if username:

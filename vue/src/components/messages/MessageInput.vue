@@ -4,12 +4,25 @@
             <font-awesome-icon :icon="['fas', 'face-smile']" />
         </div>
         <div class="files">
-            <FileDropDown @hide-file-drop="setFileMessage" :class="viewFileMessage ? 'drop' : 'none'" />
-            <font-awesome-icon @click="setFileMessage" :class="!viewFileMessage ? 'icon' : 'icon-ratate'" icon="plus" />
+            <FileDropDown
+                @hide-file-drop="setFileMessage"
+                :class="viewFileMessage ? 'drop' : 'none'"
+            />
+            <font-awesome-icon
+                @click="setFileMessage"
+                :class="!viewFileMessage ? 'icon' : 'icon-ratate'"
+                icon="plus"
+            />
         </div>
 
         <div class="text-message">
-            <input @keydown="handleKeyDown" @keyup="handleKeyUp" type="text" v-model="message" class="text" />
+            <input
+                @keydown="handleKeyDown"
+                @keyup="handleKeyUp"
+                type="text"
+                v-model="message"
+                class="text"
+            />
         </div>
 
         <div class="voice-note">
@@ -19,101 +32,103 @@
 </template>
 
 <script setup>
-import FileDropDown from "@/components/dropdowns/FileMessageDropDown.vue"
-import { defineEmits, defineProps, ref } from "vue"
+import FileDropDown from "@/components/dropdowns/FileMessageDropDown.vue";
+import { defineEmits, defineProps, ref } from "vue";
 import { useSocketStore } from "@/stores/socket";
-import { useActiveChatStore } from "@/stores/activeChat";
+import { useChatStore } from "@/stores/chats";
 import { useMessagesStore } from "@/stores/messages";
 import { useToast } from "vue-toastification";
 
-
 const toast = useToast();
-const emits = defineEmits(['view-file-message', 'file', 'hide-preview'])
-const socketStore = useSocketStore()
-const activeChatStore = useActiveChatStore()
-const messagesStore = useMessagesStore()
-const message = ref('')
-const user = JSON.parse(localStorage.getItem('user'))
+const emits = defineEmits(["view-file-message", "file", "hide-preview"]);
+const socketStore = useSocketStore();
+const chatStore = useChatStore();
+const messagesStore = useMessagesStore();
+const message = ref("");
+const user = JSON.parse(localStorage.getItem("user"));
 
 const props = defineProps({
     viewFileMessage: {
         type: Boolean,
-        required: true
-    }
-
-})
+        required: true,
+    },
+});
 
 const setFileMessage = (data) => {
-    emits('view-file-message', !props.viewFileMessage)
+    emits("view-file-message", !props.viewFileMessage);
     if (data instanceof File) {
         emits("file", data);
-
     }
-}
+};
 
 const handleKeyDown = () => {
     if (user) {
-        socketStore.socket.send(JSON.stringify({
-            sender: user.uuid,
-            receiver: activeChatStore.activeChat.chat_uuid,
-            message: null,
-            dialog: activeChatStore.activeChat.dialog,
-            typing: true
-        }))
+        socketStore.socket.send(
+            JSON.stringify({
+                sender: user.uuid,
+                receiver: chatStore.activeChat.chat_uuid,
+                message: null,
+                dialog: chatStore.activeChat.dialog,
+                typing: true,
+            }),
+        );
     }
-}
+};
 
 const handleKeyUp = () => {
     if (user) {
-        socketStore.socket.send(JSON.stringify({
-            sender: user.uuid,
-            receiver: activeChatStore.activeChat.chat_uuid,
-            message: null,
-            dialog: activeChatStore.activeChat.dialog,
-            typing: false
-        }))
+        socketStore.socket.send(
+            JSON.stringify({
+                sender: user.uuid,
+                receiver: chatStore.activeChat.chat_uuid,
+                message: null,
+                dialog: chatStore.activeChat.dialog,
+                typing: false,
+            }),
+        );
     }
-}
+};
 
 const handleSubmit = async () => {
-
     if (messagesStore.file) {
-      
         const response = await messagesStore.sendFile(
-            user.token, 
-            messagesStore.file, 
-            user.uuid
-        )
+            user.token,
+            messagesStore.file,
+            user.uuid,
+        );
 
         messagesStore.file = null;
         emits("hide-preview");
-        
-        if(response){
-            socketStore.socket.send(JSON.stringify({
-                sender: user.uuid,
-                receiver: activeChatStore.activeChat.chat_uuid,
-                message: message.value,
-                dialog: activeChatStore.activeChat.dialog,
-                file: response.id
-            }))
-        }
 
+        if (response) {
+            socketStore.socket.send(
+                JSON.stringify({
+                    sender: user.uuid,
+                    receiver: chatStore.activeChat.chat_uuid,
+                    message: message.value,
+                    dialog: chatStore.activeChat.dialog,
+                    file: response.id,
+                }),
+            );
+        }
     } else {
         if (message.value) {
-            socketStore.socket.send(JSON.stringify({
-                sender: user.uuid,
-                receiver: activeChatStore.activeChat.chat_uuid,
-                message: message.value,
-                dialog: activeChatStore.activeChat.dialog,
-                file: null
-            }))
-        }else{
-            toast.info("Can't send an empty message")
+            socketStore.socket.send(
+                JSON.stringify({
+                    sender: user.uuid,
+                    receiver: chatStore.activeChat.chat_uuid,
+                    message: message.value,
+                    dialog: chatStore.activeChat.dialog,
+                    file: null,
+                }),
+            );
+        } else {
+            toast.info("Can't send an empty message");
         }
     }
 
-    message.value = ""
-}
+    message.value = "";
+};
 </script>
 
 <style scoped>
@@ -134,7 +149,6 @@ const handleSubmit = async () => {
     border-radius: 5px;
     border: none;
     color: #b6b6b6;
-
 }
 
 .files,
@@ -143,7 +157,6 @@ const handleSubmit = async () => {
     cursor: pointer;
     color: #b6b6b6;
     padding: 5px;
-
 }
 
 .voice-note {

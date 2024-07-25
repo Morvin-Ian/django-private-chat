@@ -1,9 +1,5 @@
 // store/profile.js
 import { defineStore } from "pinia";
-import { authUrl, messageUrl } from "./auth";
-import { useAuthStore, base } from "./auth";
-
-const authStore = useAuthStore();
 
 export const useProfileStore = defineStore({
   id: "profile",
@@ -19,25 +15,19 @@ export const useProfileStore = defineStore({
           formDataObject.append(
             "profile",
             profileData.profile,
-            profileData.profile.name
+            profileData.profile.name,
           );
         }
-        const response = await fetch(editProfileUrl, {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-          body: formDataObject,
-        });
 
-        const data = await response.json();
+        const response = await instance.put(
+          "/messages/edit_user",
+          formDataObject,
+        );
 
-        if (!response.ok) {
-          return data;
+        if (response.status != 200) {
+          return response.data;
         } else {
-          authStore.profile = data.profile;
-          authStore.email = data.email;
-          authStore.username = data.username;
+          return response.data;
         }
       } catch (error) {
         console.error("Profile edit error:", error);

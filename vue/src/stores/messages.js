@@ -1,83 +1,64 @@
-import { defineStore } from 'pinia';
-import { messageUrl, base } from './auth';
+import { defineStore } from "pinia";
+import { instance } from "./axios-instance";
 
 export const useMessagesStore = defineStore({
-  id: 'messages',
+  id: "messages",
   state: () => ({
     messages: [],
-    file:null
+    file: null,
   }),
   actions: {
     async fetchMessages(access_token) {
       try {
-        const messagesUrl = `${messageUrl}/list/`;
-        const response = await fetch(messagesUrl, {
-          headers: { Authorization: `Bearer ${access_token}` },
-        });
+        const response = await instance.get("/messages/list/");
 
-        if (!response.ok) {
-          localStorage.clear();
-          throw new Error('Failed to fetch messages');
+        if (response.status != 200) {
+          throw new Error("Failed to fetch messages");
+        } else {
+          this.messages = response.data;
         }
-
-        const data = await response.json();
-        this.messages = data
-        
       } catch (error) {
-        console.error('Fetch messages error:', error);
+        console.error("Fetch messages error:", error);
         return error.message;
       }
     },
 
     async updateMessageRead(access_token, dialog) {
       try {
-        const messagesReadUrl = `${messageUrl}/read/`;
-        const response = await fetch(messagesReadUrl, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${access_token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ dialog }),
-        });
+        const response = await instance.put("/messages/read/", { dialog });
 
-        if (!response.ok) {
-          throw new Error('Failed to update message read status');
+        if (response.status != 200) {
+          throw new Error("Failed to update message read status");
+        } else {
+          return "Message read status updated successfully";
         }
-
-        return 'Message read status updated successfully';
       } catch (error) {
-        console.error('Update message read error:', error);
+        console.error("Update message read error:", error);
         return error.message;
       }
     },
-    async setFile(file){
-      this.file = file
+    async setFile(file) {
+      this.file = file;
     },
 
     async sendFile(access_token, file, sender) {
       const formData = new FormData();
-      formData.append('file', file, file.name);
-      formData.append('uploaded_by', sender);
+      formData.append("file", file, file.name);
+      formData.append("uploaded_by", sender);
 
       try {
-        const response = await fetch(`${messageUrl}/upload_file/`, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Authorization': `Bearer ${access_token}`
-          }
-        });
+        const response = await instance.post(
+          "/messages/upload_file/",
+          formData,
+        );
 
-        if (!response.ok) {
+        if (response.status != 201) {
           throw new Error(`Error uploading file: ${response.statusText}`);
         }
-        
-        return await response.json()
-
+        return await response.data;
       } catch (error) {
-        console.error('Error uploading file:', error);
+        console.error("Error uploading file:", error);
       }
-    }
-  }
+    },
+  },
 });

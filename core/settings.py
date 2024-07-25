@@ -45,7 +45,7 @@ CSRF_TRUSTED_ORIGINS = [
 INSTALLED_APPS = [
     "daphne",
     'corsheaders',
-    'rest_framework',    
+    'rest_framework',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -90,23 +90,15 @@ TEMPLATES = [
 ]
 
 
-# Web Server Gateway Interface 
+# Web Server Gateway Interface
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
-# Asynchronous Server Gateway Interface 
+# Asynchronous Server Gateway Interface
 ASGI_APPLICATION = "core.asgi.application"
 
 
 
-CHANNEL_LAYERS = {
-        "default": {
-            "BACKEND": "channels_redis.core.RedisChannelLayer",
-            "CONFIG": {
-                "hosts": [("redis", 6379)],
-            },
-        },
-}
 
 REST_FRAMEWORK = {
      'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -117,17 +109,51 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+if os.getenv('DEV_MODE'):
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME':  os.getenv('DB_NAME'),                      
-        'USER':  os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME':  'chat',
+            'USER':  'postgres',
+            'PASSWORD': 'root',
+            'HOST': 'localhost',
+            'PORT': 5432,
+        }
     }
-}
+
+
+    CHANNEL_LAYERS = {
+            "default": {
+                "BACKEND": "channels_redis.core.RedisChannelLayer",
+                "CONFIG": {
+                    "hosts": [("localhost", 6379)],
+                },
+            },
+    }
+
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME':  os.getenv('DB_NAME'),
+            'USER':  os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST'),
+            'PORT': os.getenv('DB_PORT'),
+        }
+    }
+
+
+    CHANNEL_LAYERS = {
+            "default": {
+                "BACKEND": "channels_redis.core.RedisChannelLayer",
+                "CONFIG": {
+                    "hosts": [("redis", 6379)],
+                },
+            },
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -159,7 +185,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-AUTH_USER_MODEL = "accounts.User" 
+AUTH_USER_MODEL = "accounts.User"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -168,7 +194,7 @@ STATIC_ROOT = '/static/'
 
 
 # CORS_ALLOWED_ORIGINS = [
-    
+
 #     'http://localhost:5173',
 #     'http://localhost:8080'
 # ]

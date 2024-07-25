@@ -12,14 +12,14 @@
         <div class="edit-profile">
             <div class="profile-image">
                 <img :src="profilePicture" />
-                <h2 style="text-align: center;">{{ activeChatStore.activeChat.username }}</h2>
+                <h2 style="text-align: center">
+                    {{ chatStore.activeChat.username }}
+                </h2>
             </div>
 
             <div class="about">
-
-                <small class="title">About</small> <br>
+                <small class="title">About</small> <br />
                 <small>Discipline, Competence, and Order</small>
-
             </div>
 
             <div class="media-links">
@@ -37,62 +37,62 @@
                         Mute notifications
                     </li>
                     <li>
-                        <font-awesome-icon class="icon" icon="arrow-rotate-right" />
+                        <font-awesome-icon
+                            class="icon"
+                            icon="arrow-rotate-right"
+                        />
                         Dissapearing messages
                     </li>
 
                     <li>
                         <font-awesome-icon class="icon" icon="lock" />
-                        Encryption <br>
-                        <small style="margin-left: 17%;">Messages are end-to-end enctyped</small>
+                        Encryption <br />
+                        <small style="margin-left: 17%"
+                            >Messages are end-to-end enctyped</small
+                        >
                     </li>
 
-                   <div class="danger">
-                    <li>
-                        <font-awesome-icon class="icon" icon="ban" />
-                        Block Sane
-                    </li>
-                    <li>
-                        <font-awesome-icon class="icon" icon="thumbs-down" />
-                        Report Sane
-                    </li>
-                    <li>
-                        <font-awesome-icon class="icon" icon="trash" />
-                        Delete Chat
-                    </li>
-                   </div>
+                    <div class="danger">
+                        <li>
+                            <font-awesome-icon class="icon" icon="ban" />
+                            Block Sane
+                        </li>
+                        <li>
+                            <font-awesome-icon
+                                class="icon"
+                                icon="thumbs-down"
+                            />
+                            Report Sane
+                        </li>
+                        <li>
+                            <font-awesome-icon class="icon" icon="trash" />
+                            Delete Chat
+                        </li>
+                    </div>
                 </ul>
-
-
             </div>
-
         </div>
-
     </div>
 </template>
 
 <script setup>
-import profilePicture from "@/assets/default.jpg"
-import { defineProps, defineEmits } from 'vue';
+import profilePicture from "@/assets/default.jpg";
+import { defineProps, defineEmits } from "vue";
+import { useChatStore } from "@/stores/chats.js";
 
-import {useActiveChatStore} from "@/stores/activeChat.js"
-
-
-const emits = defineEmits(['view-chat-profile'])
-const activeChatStore = useActiveChatStore();
-
+const emits = defineEmits(["view-chat-profile"]);
+const chatStore = useChatStore();
 
 const props = defineProps({
     viewChatProfile: {
         type: Boolean,
-        required: true
-    }
-})
+        required: true,
+    },
+});
 
 const hideProfile = () => {
-    emits('view-chat-profile', false)
-}
-
+    emits("view-chat-profile", false);
+};
 </script>
 
 <style scoped>
@@ -101,28 +101,28 @@ const hideProfile = () => {
     top: 0%;
     right: 0%;
     color: #b6b6b6;
-    background: #202C33;
+    background: #202c33;
     width: 25%;
     height: 105vh;
     justify-content: center;
     visibility: visible;
     overflow-y: scroll;
-    transition: opacity 0.5s ease, max-height 0.7s ease, visibility 0.5s ease;
+    transition:
+        opacity 0.5s ease,
+        max-height 0.7s ease,
+        visibility 0.5s ease;
 }
 
 .profile-hidden {
-
     opacity: 0;
     max-height: 0;
     visibility: hidden;
-
 }
 
 .profile-container .top {
     display: flex;
     background-color: #141c20;
     padding: 20px;
-
 }
 
 .top .arrow {
@@ -138,21 +138,20 @@ const hideProfile = () => {
     padding: 25px;
 }
 
-
 .profile-image img {
     border-radius: 50%;
     width: 260px;
     height: 260px;
     cursor: pointer;
-    transition: width 0.5s ease, height 0.5s ease;
-
+    transition:
+        width 0.5s ease,
+        height 0.5s ease;
 }
 
 .profile-image img:hover {
     border-radius: 50%;
     width: 255px;
     height: 255px;
-
 }
 
 #profile {
@@ -173,15 +172,12 @@ const hideProfile = () => {
     background-color: #141c20;
     padding: 15px;
     margin-bottom: 15px;
-
 }
 
 .handle-chats {
     background-color: #141c20;
     padding: 10px;
     margin-bottom: 10px;
-
-
 }
 
 .handle-chats ul {
@@ -198,11 +194,11 @@ ul li {
     margin-right: 10%;
 }
 
-.danger{
-    margin-top:40px;
+.danger {
+    margin-top: 40px;
 }
 
-.handle-chats .danger .icon{
+.handle-chats .danger .icon {
     margin-right: 10%;
     color: red;
 }

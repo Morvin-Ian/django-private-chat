@@ -1,7 +1,12 @@
 <template>
-    <div v-if="message.dialog === activeChatStore.activeChat.dialog"
-        :class="userId !== message.sender ? 'message-container-received' : 'message-container-sent'">
-
+    <div
+        v-if="message.dialog === chatStore.activeChat.dialog"
+        :class="
+            userId !== message.sender
+                ? 'message-container-received'
+                : 'message-container-sent'
+        "
+    >
         <div class="message">
             <div class="message-body">
                 <div v-if="message.file" class="file">
@@ -9,8 +14,8 @@
                         <img :src="file" alt="file" />
                     </template>
                     <template v-else-if="isVideo(file)">
-                        <video width="320" height="240" autoplay loop >
-                            <source :src="file" type="video/mp4">
+                        <video width="320" height="240" autoplay loop>
+                            <source :src="file" type="video/mp4" />
                         </video>
                     </template>
                     <template v-else>
@@ -19,13 +24,22 @@
                 </div>
 
                 <div class="text">
-                    <span>{{ message.text }}</span> <br>
+                    <span>{{ message.text }}</span> <br />
                     <small class="time">
                         {{ formatDateTime(message.created_at).date }}
                         {{ formatDateTime(message.created_at).time }}
-                        <font-awesome-icon v-if="userId === message.sender"
-                            :style="{ color: message.read ? 'aqua' : 'inherit' }" class="tick-icon"
-                            :icon="message.read ? ['fas', 'check-double'] : ['fas', 'check']" />
+                        <font-awesome-icon
+                            v-if="userId === message.sender"
+                            :style="{
+                                color: message.read ? 'aqua' : 'inherit',
+                            }"
+                            class="tick-icon"
+                            :icon="
+                                message.read
+                                    ? ['fas', 'check-double']
+                                    : ['fas', 'check']
+                            "
+                        />
                     </small>
                 </div>
             </div>
@@ -33,41 +47,38 @@
     </div>
 </template>
 
-
 <script setup>
-import { defineProps, computed } from "vue"
+import { defineProps, computed } from "vue";
 import { formatDateTime } from "@/utils/helpers";
-import { useActiveChatStore } from "@/stores/activeChat";
+import { useChatStore } from "@/stores/chats";
 import { base as baseUrl } from "@/stores/auth";
 
-
-const activeChatStore = useActiveChatStore()
+const chatStore = useChatStore();
 
 const props = defineProps({
     message: {
         type: Object,
         required: true,
-    }
-})
+    },
+});
 
-const file = `${baseUrl}${props.message.file}`
+const file = `${baseUrl}${props.message.file}`;
 
 const userId = computed(() => {
-    return JSON.parse(localStorage.getItem("user")).uuid
+    return JSON.parse(localStorage.getItem("user")).uuid;
 });
 
 const isImage = (file) => {
-    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-    const extension = file.split('.').pop().toLowerCase();
+    const imageExtensions = ["jpg", "jpeg", "png", "gif"];
+    const extension = file.split(".").pop().toLowerCase();
     return imageExtensions.includes(extension);
-}
+};
 
 const isVideo = (file) => {
-    const videoExtensions = ['mp4', 'mkv', 'avi'];
-    const extension = file.split('.').pop().toLowerCase();
+    const videoExtensions = ["mp4", "mkv", "avi"];
+    const extension = file.split(".").pop().toLowerCase();
     return videoExtensions.includes(extension);
-}
-
+};
 </script>
 
 <style scoped>
@@ -84,11 +95,10 @@ const isVideo = (file) => {
     gap: 10px;
     margin: 10px;
     flex-direction: row-reverse;
-
 }
 
 .message-container-received .message {
-    background: #202C33;
+    background: #202c33;
     color: #b6b6b6;
     padding: 10px;
     border-radius: 0px 10px 10px 10px;
@@ -96,7 +106,7 @@ const isVideo = (file) => {
 }
 
 .message-container-sent .message {
-    background-color: #075E54;
+    background-color: #075e54;
     color: #fff;
     padding: 10px;
     border-radius: 0px 10px 10px 10px;
