@@ -26,10 +26,11 @@ Some of the key features of Django Channels include:
     
 ## Run Application
 1. git clone 'this repo's link'
-2. python manage.py migrate
-3. make build
+2. make build
 4. make up
-5. Access on 0.0.0.0:8080 
+5. make makemigrations
+6. make migrate
+7. Access on 0.0.0.0:8080 
     
 
 
