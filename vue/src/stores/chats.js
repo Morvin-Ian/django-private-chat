@@ -1,6 +1,4 @@
 import { defineStore } from "pinia";
-import { messageUrl } from "./auth";
-import { base } from "./auth";
 import { instance } from "./axios-instance";
 
 export const useChatStore = defineStore("chats", {

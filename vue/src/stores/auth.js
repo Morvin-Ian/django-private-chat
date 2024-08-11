@@ -2,9 +2,6 @@
 import { defineStore } from "pinia";
 import { instance } from "./axios-instance";
 
-export const base = "http://127.0.0.1:8000";
-export const messageUrl = "/api/messages";
-export const authUrl = "/api/auth";
 
 export const useAuthStore = defineStore({
   id: "auth",
