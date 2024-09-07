@@ -1,4 +1,4 @@
-# Django-on-steroids
+# Private Chat Application
 
 The project, is focused on a real time chat app utilizing `vue` library and `Django` backend.
 The api was heavily dependent on `Django restframework`. 
