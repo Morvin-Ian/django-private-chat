@@ -1,5 +1,5 @@
-from messaging.models import Message
-from accounts.models import User
+from apps.messaging.models import Message
+from apps.accounts.models import User
 from rest_framework import serializers
 
 

@@ -3,8 +3,8 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.views import Response
 from rest_framework import status
 
-from messaging.models import Message, Dialog, UploadedFile
-from accounts.models import User
+from apps.messaging.models import Message, Dialog, UploadedFile
+from apps.accounts.models import User
 
 from django.db.models import Q
 from django.core.cache import cache

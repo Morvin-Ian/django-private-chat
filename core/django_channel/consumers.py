@@ -1,7 +1,6 @@
 import json
 from .db_operations import get_user, save_message, get_file
 from channels.generic.websocket import AsyncWebsocketConsumer
-from messaging.models import UploadedFile
 
 
 class ChatConsumer(AsyncWebsocketConsumer):

@@ -2,7 +2,7 @@ from rest_framework.authentication import get_authorization_header, BaseAuthenti
 from rest_framework import exceptions
 import jwt
 
-from accounts.models import User
+from apps.accounts.models import User
 from django.conf import settings
 
 class JWTAuthentication(BaseAuthentication):

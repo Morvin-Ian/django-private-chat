@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from messaging.models import Message, UploadedFile
+from apps.messaging.models import Message, UploadedFile
 
 from rest_framework import serializers
-from messaging.models import Message, UploadedFile
+from apps.messaging.models import Message, UploadedFile
 
 class MessageSerializer(serializers.ModelSerializer):
     sender = serializers.UUIDField(source='sender.uuid')

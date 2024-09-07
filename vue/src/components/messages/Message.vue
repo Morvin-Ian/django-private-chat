@@ -51,7 +51,7 @@
 import { defineProps, computed } from "vue";
 import { formatDateTime } from "@/utils/helpers";
 import { useChatStore } from "@/stores/chats";
-import { base as baseUrl } from "@/stores/auth";
+import { baseUrl } from "@/stores/axios-instance";
 
 const chatStore = useChatStore();
 

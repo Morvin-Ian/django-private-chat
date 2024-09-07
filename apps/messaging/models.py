@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import User
+from apps.accounts.models import User
 import uuid
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _

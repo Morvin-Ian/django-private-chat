@@ -6,8 +6,8 @@ from django.db.models import Exists, OuterRef
 
 
 from .serializer import  RegisterSerializer, LoginSerializer
-from accounts.models import User
-from messaging.models import Dialog
+from apps.accounts.models import User
+from apps.messaging.models import Dialog
 
 from rest_framework import status
 from rest_framework.response import Response

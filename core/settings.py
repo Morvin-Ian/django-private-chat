@@ -102,7 +102,7 @@ ASGI_APPLICATION = "core.asgi.application"
 
 REST_FRAMEWORK = {
      'DEFAULT_AUTHENTICATION_CLASSES': [
-        'accounts.api.json_web_tokens.JWTAuthentication'
+        'apps.accounts.api.json_web_tokens.JWTAuthentication'
       ],
 }
 

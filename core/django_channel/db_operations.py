@@ -1,6 +1,6 @@
 from channels.db import database_sync_to_async
-from accounts.models import User
-from messaging.models import Dialog, Message, UploadedFile
+from apps.accounts.models import User
+from apps.messaging.models import Dialog, Message, UploadedFile
 
 
 @database_sync_to_async
