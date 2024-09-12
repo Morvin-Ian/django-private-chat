@@ -44,11 +44,7 @@ const setActiveChat = (chat) => {
 };
 
 onMounted(async () => {
-    const response = await chatStore.getChats();
-    if (response.status == 403) {
-        localStorage.clear();
-        window.location.assign("/sign-in");
-    }
+    await chatStore.getChats();
 });
 </script>
 

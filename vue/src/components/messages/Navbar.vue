@@ -128,7 +128,7 @@ const closeChat = (data) => {
 }
 
 .user-profile .name {
-    margin-top: 10px;
+    margin: 12px 5px;
     font-weight: bold;
 }
 

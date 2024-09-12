@@ -33,10 +33,10 @@
                     <small v-if="chat.unread_count != 0" class="unread">
                         {{ chat.unread_count }}</small
                     >
-                    <!-- <font-awesome-icon
+                    <font-awesome-icon
                         class="icon"
                         :icon="['fas', 'chevron-down']"
-                    /> -->
+                    />
                 </div>
             </div>
         </div>
@@ -144,7 +144,7 @@ const truncateText = (text) => {
     } */
 
 .low .icon {
-    left: 25%;
+    left: 23%;
     position: absolute;
     visibility: hidden;
     font-size: small;

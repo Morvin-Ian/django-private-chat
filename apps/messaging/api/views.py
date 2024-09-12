@@ -84,14 +84,31 @@ class CreateDialogView(GenericAPIView):
 
             dialog = Dialog.objects.create(
                 sender=sender_instance, recepient=receiver_instance)
-
-            response = {
-                "dialog": dialog.id
-            }
-
-            return Response(response, status=status.HTTP_200_OK)
+            return Response({"dialog": dialog.id}, status=status.HTTP_200_OK)
         else:
-            return Response("Invalid users provided", status=status.HTTP_200_OK)
+            return Response("Invalid users provided", status=status.HTTP_400_BAD_REQUEST)
+
+class DeleteDialog():
+    """Deletes a dialog between users"""
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        sender = request.data.get('sender')
+        receiver = request.data.get('receiver')
+
+        sender_instance = User.objects.get(uuid=sender)
+        receiver_instance = User.objects.get(uuid=receiver)
+
+        if sender_instance and receiver_instance:
+            dialog = Dialog.objects.get(Q(sender=sender_instance) & Q(receiver=receiver_instance) | Q(sender=receiver_instance) & Q(receiver=sender_instance))
+            if dialog:
+                # dialog.delete()
+                print(dialog)
+                return Response("Dialog Deleted", status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response("Dialog Not Found", status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response("Error Encountered",  status=status.HTTP_400_BAD_REQUEST)
 
 
 class UpdateReadMessages(GenericAPIView):
@@ -121,8 +138,8 @@ class FileUploadView(GenericAPIView):
         sender = User.objects.get(uuid=uploaded_by_id)
 
         uploaded_file = UploadedFile.objects.create(
-            uploaded_by=sender,
-            file=file
+            uploaded_by = sender,
+            file = file
         )
 
         serializer = UploadedFileSerializer(uploaded_file)

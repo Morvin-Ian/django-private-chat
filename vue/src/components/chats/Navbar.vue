@@ -1,14 +1,11 @@
 <template>
     <div class="nav-container">
         <div class="user-profile">
-            <img
-                @click="setProfile"
-                :src="
-                    user.profile
+            <img @click="setProfile" 
+                :src="user?.profile
                         ? `${baseUrl}${user.profile}`
-                        : `${profilePicture}`
-                "
-                alt="profile"
+                        : `${profilePicture}`" 
+                alt="profile" 
             />
         </div>
 
@@ -22,20 +19,11 @@
             </div>
 
             <div class="add-chat">
-                <font-awesome-icon
-                    @click="addChat"
-                    class="icon"
-                    :icon="['fas', 'square-plus']"
-                />
+                <font-awesome-icon @click="addChat" class="icon" :icon="['fas', 'square-plus']" />
             </div>
 
             <div class="more">
-                <font-awesome-icon
-                    @click="setDropDown"
-                    class="icon"
-                    id="more"
-                    :icon="['fas', 'ellipsis-vertical']"
-                />
+                <font-awesome-icon @click="setDropDown" class="icon" id="more" :icon="['fas', 'ellipsis-vertical']" />
             </div>
         </div>
 
@@ -72,6 +60,7 @@ const addChat = () => {
 const setDropDown = () => {
     emits("view-chat-drop", !props.viewChatDrop);
 };
+
 </script>
 
 <style scoped>
@@ -114,6 +103,7 @@ const setDropDown = () => {
 #more {
     border-radius: 0%;
 }
+
 .nav-btns div .icon {
     font-size: large;
     cursor: pointer;
@@ -126,6 +116,7 @@ const setDropDown = () => {
 .drop {
     display: block;
 }
+
 .none {
     display: none;
 }

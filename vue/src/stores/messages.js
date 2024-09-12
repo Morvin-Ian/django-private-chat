@@ -45,7 +45,7 @@ export const useMessagesStore = defineStore({
       formData.append("file", file, file.name);
       formData.append("uploaded_by", sender);
 
-      console.log(formData)
+      console.log(formData);
 
       try {
         const response = await instance.post(

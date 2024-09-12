@@ -13,28 +13,31 @@ export const useChatStore = defineStore("chats", {
     async getChats() {
       try {
         const response = await instance.get("/messages/chats/");
-
-        if (response.status == 403) {
+        this.chats = response.data;
+        return response.data;
+      } catch (error) {
+        if (error?.response?.status == 403) {
           localStorage.clear();
           location.assign("/sign-in");
           return;
         }
-        this.chats = response.data;
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching chats:", error);
       }
     },
     async addChat(uuids) {
-      const response = await instance.post("/messages/add_dialog/", uuids);
-
-      if (response.status == 403) {
-        localStorage.clear();
-        location.assign("/sign-in");
-        return;
-      } else {
+      try {
+        const response = await instance.post("/messages/add_dialog/", uuids);
         return response.data;
+
+      } catch (error) {
+        
+        if (error?.response?.status == 403) {
+          localStorage.clear();
+          location.assign("/sign-in");
+          return;
+        }
       }
+
+
     },
 
     deleteChat(id) {

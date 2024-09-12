@@ -11,9 +11,16 @@
 
         <div class="edit-profile">
             <div class="profile-image">
-                <img :src="profilePicture" />
+                <img
+                    :src="
+                        chatStore.activeChat.profile
+                            ? `${baseUrl}${chatStore.activeChat.profile}`
+                            : `${profilePicture}`
+                    "
+                    alt="profile"
+                />
                 <h2 style="text-align: center">
-                    {{ chatStore.activeChat.username }}
+                    {{ chatStore.activeChat.chat }}
                 </h2>
             </div>
 
@@ -55,18 +62,18 @@
                     <div class="danger">
                         <li>
                             <font-awesome-icon class="icon" icon="ban" />
-                            Block Sane
+                            Block {{ chatStore.activeChat.chat }}
                         </li>
                         <li>
                             <font-awesome-icon
                                 class="icon"
                                 icon="thumbs-down"
                             />
-                            Report Sane
+                            Report {{ chatStore.activeChat.chat }}
                         </li>
                         <li>
                             <font-awesome-icon class="icon" icon="trash" />
-                            Delete Chat
+                            Delete {{ chatStore.activeChat.chat }}
                         </li>
                     </div>
                 </ul>
@@ -79,6 +86,7 @@
 import profilePicture from "@/assets/default.jpg";
 import { defineProps, defineEmits } from "vue";
 import { useChatStore } from "@/stores/chats.js";
+import { baseUrl } from "@/stores/axios-instance";
 
 const emits = defineEmits(["view-chat-profile"]);
 const chatStore = useChatStore();

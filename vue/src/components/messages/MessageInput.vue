@@ -92,7 +92,6 @@ const handleKeyUp = () => {
 const handleSubmit = async () => {
     if (messagesStore.file) {
         const response = await messagesStore.sendFile(
-            user.token,
             messagesStore.file,
             user.uuid,
         );
