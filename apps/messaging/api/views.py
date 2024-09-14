@@ -74,8 +74,8 @@ class CreateDialogView(GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        sender = request.data.get('sender')
-        receiver = request.data.get('receiver')
+        sender = request.data.get('sender', None)
+        receiver = request.data.get('receiver', None)
 
         sender_instance = User.objects.get(uuid=sender)
         receiver_instance = User.objects.get(uuid=receiver)
@@ -88,7 +88,7 @@ class CreateDialogView(GenericAPIView):
         else:
             return Response("Invalid users provided", status=status.HTTP_400_BAD_REQUEST)
 
-class DeleteDialog():
+class DeleteDialog(GenericAPIView):
     """Deletes a dialog between users"""
     permission_classes = [IsAuthenticated]
     

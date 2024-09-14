@@ -1,13 +1,18 @@
 <template>
     <div class="chat-list">
-        <div class="chat" v-for="chat in chatStore.sortedChats" :key="chat.id">
+        <div v-if="chatStore.sortedChats.length > 0" class="chat" v-for="chat in chatStore.sortedChats" :key="chat.id">
             <Chat
                 :typing="typing"
                 :sender="sender"
                 :receiver="receiver"
                 @click="setActiveChat(chat)"
                 :chat="chat"
+                @contextmenu="displayChatPopup($event, chat)"
             />
+        </div>
+
+        <div v-else class="no-list">
+            <p>Add Relationships ('+' Icon on top)</p>
         </div>
     </div>
 </template>
@@ -43,6 +48,11 @@ const setActiveChat = (chat) => {
     emits("change-view", false);
 };
 
+const displayChatPopup = (event, chat) => {
+    event.preventDefault(); 
+    chatStore.setChat(chat); 
+}
+
 onMounted(async () => {
     await chatStore.getChats();
 });
@@ -53,5 +63,12 @@ onMounted(async () => {
     margin-top: 5px;
     height: 85vh;
     overflow-y: scroll;
+}
+
+.no-list{
+    margin-left: 10px;
+    color: #b6b6b6;
+    font-weight: bolder;
+    font-style: italic;
 }
 </style>

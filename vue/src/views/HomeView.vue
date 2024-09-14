@@ -57,7 +57,7 @@ onMounted(() => {
     return
   }
 
-  socketStore.setSocket()
+socketStore.setSocket('127.0.0.1', '8000', '/ws/chat/brace/')
 
 socketStore.socket.onopen = () => {
   toast.success("Connection established!");

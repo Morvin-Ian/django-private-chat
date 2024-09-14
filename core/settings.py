@@ -165,9 +165,8 @@ AUTH_USER_MODEL = "accounts.User"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = '/static/'
-
+STATIC_URL = '/static/'
+STATIC_ROOT = '/app/staticfiles'
 
 # CORS_ALLOWED_ORIGINS = [
 
@@ -178,7 +177,7 @@ STATIC_ROOT = '/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR,' app', 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

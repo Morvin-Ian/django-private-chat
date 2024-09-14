@@ -24,7 +24,6 @@
         </div>
     </div>
 </template>
-console.log(response);
 
 <script setup>
 import { onMounted, ref } from "vue";
@@ -44,11 +43,13 @@ const login = async () => {
             email: email.value,
             password: password.value,
         });
-        if (response.token) {
-            localStorage.setItem("user", JSON.stringify(response));
+
+        if (response.success) {
+            localStorage.setItem("user", JSON.stringify(response.data));
+            store.setUser(response.data.user);
             router.push("/");
         } else {
-            error.value = response.data.error;
+            error.value = response.error.detail || "An error occurred during login.";
         }
     }
 };

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const baseUrl = "http://127.0.0.1:8000";
-let apiBaseUrl = "http://127.0.0.1:8000/api";
+let apiBaseUrl = `/api`;
 
 export const instance = axios.create({
   baseURL: `${apiBaseUrl}`,

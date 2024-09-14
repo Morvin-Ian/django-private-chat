@@ -13,15 +13,11 @@ services:
     restart: "on-failure"
     networks:
       - messaging-api
-    volumes:
-      - static:/app/staticfiles
 
   frontend:
     container_name: frontend
     build:
       context: ./vue
-    ports:
-      - "3000:3000"
     command: npm run dev -- --host 0.0.0.0
     depends_on:
       - messaging-api
@@ -51,7 +47,6 @@ services:
       - 8080:80
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - static:/usr/share/nginx/html/static
     depends_on:
       - messaging-api
       - frontend
@@ -71,4 +66,3 @@ networks:
 
 volumes:
   postgres_data:
-  static:

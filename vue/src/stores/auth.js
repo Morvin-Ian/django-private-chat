@@ -1,32 +1,44 @@
-// store/auth.js
 import { defineStore } from "pinia";
 import { instance } from "./axios-instance";
 
-
-export const useAuthStore = defineStore({
-  id: "auth",
+export const useAuthStore = defineStore("auth", {
   state: () => ({
-    uuid: null,
+    user: null,
+    isAuthenticated: false,
   }),
+
   actions: {
     async authenticate(credentials) {
       try {
         const response = await instance.post("/auth/login/", credentials);
-        return response.data;
+        this.setUser(response.data.user);
+        return { success: true, data: response.data };
       } catch (error) {
-        return error.response;
+        return { success: false, error: error.response.data };
       }
     },
-    async registration(credentials) {
+
+    async register(credentials) {
       try {
-        const response = await instance.post("auth/register/", credentials);
-        return { status: response.status, data: response.data };
+        const response = await instance.post("/auth/register/", credentials);
+        return { success: true, data: response.data };
       } catch (error) {
-        return {
-          status: error.response.status,
-          error: error.response.data,
-        };
+        return { success: false, error: error.response.data };
       }
     },
+
+    setUser(user) {
+      this.user = user;
+      this.isAuthenticated = !!user;
+    },
+
+    logout() {
+      this.user = null;
+      this.isAuthenticated = false;
+    },
+  },
+
+  getters: {
+    userUuid: (state) => state.user?.uuid,
   },
 });

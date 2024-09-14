@@ -46,19 +46,21 @@ const user = JSON.parse(localStorage.getItem("user"));
 
 const register = async () => {
     if (password.value && email.value) {
-        const response = await store.registration({
+        const response = await store.register({
             username: username.value,
             email: email.value,
             password: password.value,
         });
 
-        if (response.status == 201) {
+        if (response.success) {
             router.push("/sign-in");
         } else {
             if (response.error.username) {
                 error.value = response.error.username[0];
-            } else {
+            } else if (response.error.email) {
                 error.value = response.error.email[0];
+            } else {
+                error.value = "An error occurred during registration.";
             }
         }
     }
