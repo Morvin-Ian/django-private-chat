@@ -3,6 +3,8 @@ services:
     container_name: messaging-api
     build:
       context: .
+    volumes:
+      - media_volume:/media
     ports:
       - "8000:8000"
     depends_on:
@@ -47,6 +49,7 @@ services:
       - 8080:80
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - media_volume:/media
     depends_on:
       - messaging-api
       - frontend
@@ -66,3 +69,4 @@ networks:
 
 volumes:
   postgres_data:
+  media_volume:
