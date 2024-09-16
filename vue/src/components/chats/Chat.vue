@@ -144,7 +144,7 @@ const truncateText = (text) => {
     } */
 
 .low .icon {
-    left: 23%;
+    right: 2%;
     position: absolute;
     visibility: hidden;
     font-size: small;

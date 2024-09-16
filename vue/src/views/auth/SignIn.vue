@@ -49,7 +49,7 @@ const login = async () => {
             store.setUser(response.data.user);
             router.push("/");
         } else {
-            error.value = response.error.detail || "An error occurred during login.";
+            error.value = response.error.error || "An error occurred during login.";
         }
     }
 };

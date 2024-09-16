@@ -24,11 +24,13 @@ const logout = () =>{
 <style scoped>
     .drop-list{
         position: absolute;
-        top:8%;
-        left:10%;
+        top:6%;
+        right:56%;
         background: #202C33;
         width: 15%;
         padding: 5px 20px;
+        border: 1px solid #b6b6b6;
+        border-radius: 5px;
 
     }
 

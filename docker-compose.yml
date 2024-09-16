@@ -20,6 +20,8 @@ services:
     container_name: frontend
     build:
       context: ./vue
+    volumes:
+      - ./vue:/app
     command: npm run dev -- --host 0.0.0.0
     depends_on:
       - messaging-api
@@ -49,7 +51,6 @@ services:
       - 8080:80
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./vue:/app
     depends_on:
       - messaging-api
       - frontend

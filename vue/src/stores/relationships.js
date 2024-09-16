@@ -49,5 +49,19 @@ export const useRelationshipsStore = defineStore({
         return error.message;
       }
     },
+
+    async deleteRelationships(data) {
+      try {
+        const response = await instance.post("/messages/delete_dialog/", data);
+
+        if (response.status != 204) {
+          return response.status;
+        } else {
+          return response.status;
+        }
+      } catch (error) {
+        return error.message;
+      }
+    },
   },
 });

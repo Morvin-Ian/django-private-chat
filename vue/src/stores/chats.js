@@ -4,8 +4,7 @@ import { instance } from "./axios-instance";
 export const useChatStore = defineStore("chats", {
   state: () => ({
     chats: [],
-    activeChat: null,
-    chatDropDown: false,
+    activeChat: null
   }),
 
   actions: {
@@ -30,10 +29,6 @@ export const useChatStore = defineStore("chats", {
 
     deleteChat(id) {
       this.chats = this.chats.filter((chat) => chat.id !== id);
-    },
-
-    toggleDropDown() {
-      this.chatDropDown = !this.chatDropDown;
     },
 
     async setChat(chat) {

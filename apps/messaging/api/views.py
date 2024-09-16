@@ -95,16 +95,22 @@ class DeleteDialog(GenericAPIView):
     def post(self, request):
         sender = request.data.get('sender')
         receiver = request.data.get('receiver')
+        del_dialog = request.data.get('del_dialog', False)
 
         sender_instance = User.objects.get(uuid=sender)
         receiver_instance = User.objects.get(uuid=receiver)
 
         if sender_instance and receiver_instance:
-            dialog = Dialog.objects.get(Q(sender=sender_instance) & Q(receiver=receiver_instance) | Q(sender=receiver_instance) & Q(receiver=sender_instance))
+            dialog = Dialog.objects.get(Q(sender_id=sender_instance) & Q(recepient_id=receiver_instance) | Q(sender_id=receiver_instance) & Q(recepient_id=sender_instance))
             if dialog:
-                # dialog.delete()
-                print(dialog)
-                return Response("Dialog Deleted", status=status.HTTP_204_NO_CONTENT)
+                messages = Message.objects.filter(dialog=dialog.id)
+                for message in messages:
+                    message.delete()
+                if not del_dialog:
+                    return Response("Message deleted", status=status.HTTP_200_OK)
+                else:
+                    dialog.delete()
+                    return Response("Dialog and Messages Deleted", status=status.HTTP_204_NO_CONTENT)
             else:
                 return Response("Dialog Not Found", status=status.HTTP_404_NOT_FOUND)
         else:

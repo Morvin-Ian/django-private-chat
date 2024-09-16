@@ -28,7 +28,8 @@ const closeChat= () => {
         background: #202C33;
         padding:5px;
         width: 20%;
-
+        border: 1px solid #b6b6b6;
+        border-radius: 5px;
     }
 
     .drop-list-no{

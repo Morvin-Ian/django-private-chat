@@ -1,16 +1,11 @@
 <template>
     <div class="chat-list">
         <div v-if="chatStore.sortedChats.length > 0" class="chat" v-for="chat in chatStore.sortedChats" :key="chat.id">
-            <Chat
-                :typing="typing"
-                :sender="sender"
-                :receiver="receiver"
-                @click="setActiveChat(chat)"
-                :chat="chat"
-                @contextmenu="displayChatPopup($event, chat)"
-            />
+            <div class="chat-wrapper" @contextmenu.prevent="displayChatPopup($event, chat)">
+                <Chat :typing="typing" :sender="sender" :receiver="receiver" @click="setActiveChat(chat)" :chat="chat" />
+                <ChatOptionsDropDown :chat="chat" v-if="chat.showDropDown" class="chat-dropdown" />
+            </div>
         </div>
-
         <div v-else class="no-list">
             <p>Add Relationships ('+' Icon on top)</p>
         </div>
@@ -18,10 +13,11 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useChatStore } from "@/stores/chats.js";
 import { useMessagesStore } from "@/stores/messages";
 import Chat from "@/components/chats/Chat.vue";
+import ChatOptionsDropDown from "../dropdowns/ChatOptionsDropDown.vue";
 
 const props = defineProps({
     typing: {
@@ -49,12 +45,20 @@ const setActiveChat = (chat) => {
 };
 
 const displayChatPopup = (event, chat) => {
-    event.preventDefault(); 
-    chatStore.setChat(chat); 
-}
+    chatStore.sortedChats.forEach(c => {
+        if (c.id !== chat.id) {
+            c.showDropDown = false;
+        }
+    });
+    
+    chat.showDropDown = !chat.showDropDown;
+};
 
 onMounted(async () => {
     await chatStore.getChats();
+    chatStore.sortedChats.forEach(chat => {
+        chat.showDropDown = false;
+    });
 });
 </script>
 
@@ -65,10 +69,21 @@ onMounted(async () => {
     overflow-y: scroll;
 }
 
-.no-list{
+.no-list {
     margin-left: 10px;
     color: #b6b6b6;
     font-weight: bolder;
     font-style: italic;
+}
+
+.chat-wrapper {
+    position: relative;
+}
+
+.chat-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 10;
 }
 </style>

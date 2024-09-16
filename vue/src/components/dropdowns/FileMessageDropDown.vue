@@ -51,6 +51,8 @@ const handleFileChange = (event) => {
     left: 30%;
     background: #202c33;
     padding: 30px;
+    border: 1px solid #b6b6b6;
+    border-radius: 5px;
 }
 
 .drop-list-no {
