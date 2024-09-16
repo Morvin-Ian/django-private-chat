@@ -12,10 +12,28 @@ from django.core.cache import cache
 from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import UploadedFileSerializer, MessageSerializer
 
+import os
+
 
 class DialogView(GenericAPIView):
     """Gets the dialogues of a user"""
     permission_classes = [IsAuthenticated]
+    
+    def get_file_type(self, file):
+     
+        if not file:
+            return None
+        
+        file_name = str(file)
+        
+        if file_name.endswith(('.doc', '.docx', '.pdf')):
+            return 'document'
+        elif file_name.endswith(('.png', '.jpg', '.jpeg', '.gif')):
+            return 'image'
+        elif file_name.endswith(('.mkv', '.mp4', '.avi', '.mov')):
+            return 'video'
+        else:
+            return 'other'
 
     def get(self, request):
         user = request.user
@@ -45,6 +63,7 @@ class DialogView(GenericAPIView):
                 "dialog": dialog.id,
                 "user": user.uuid,
                 "last_message": last_message.text if last_message else None,
+                "last_message_file_type": self.get_file_type(last_message.file) if last_message.file else None,
                 "last_message_sender": last_message.sender.uuid if last_message else None,
                 "unread_count": unread_count,
                 "date": last_message.created_at if last_message else None

@@ -27,12 +27,11 @@ export const useRelationshipsStore = defineStore({
         if (response.status != 200) {
           localStorage.clear();
           throw new Error("Failed to fetch users");
-          return;
         }
 
         return response.data;
       } catch (error) {
-        console.error("Fetch users error:", error);
+        console.error("Fetch users error:", error.response);
       }
     },
 

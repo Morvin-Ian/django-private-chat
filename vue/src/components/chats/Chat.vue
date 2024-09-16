@@ -28,7 +28,24 @@
                     </small>
 
                     <small v-else class="last-msg"
-                        >{{ truncateText(chat.last_message) }}
+                        >
+                        {{ truncateText(chat.last_message) }}
+                        <font-awesome-icon
+                            v-if="chat?.last_message_file_type == 'document'"
+                            class="image"
+                            :icon="['fas', 'file']"
+                        />
+
+                        <font-awesome-icon
+                            v-else-if="chat?.last_message_file_type == 'video'"
+                            class="image"
+                            :icon="['fas', 'video-camera']"
+                        />
+                        <font-awesome-icon
+                            v-else-if="chat?.last_message_file_type == 'image'"
+                            class="image"
+                            :icon="['fas', 'image']"
+                        />
                     </small>
                     <small v-if="chat.unread_count != 0" class="unread">
                         {{ chat.unread_count }}</small

@@ -19,8 +19,8 @@ import {
     faFile,faImages,faCamera, faUser,
     faSquarePollVertical,faCircleXmark,
     faBell, faStar, faArrowRotateRight,
-    faLock,faTrash,faBan,
-    faThumbsDown, faCheckDouble, faCheck
+    faLock,faTrash,faBan, faVideoCamera,
+    faThumbsDown, faCheckDouble, faCheck, faImage
 
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -30,9 +30,9 @@ library.add(
     faSquarePlus, faEllipsisVertical, faPlus,
     faSort, faMagnifyingGlass,
     faChevronDown, faVideo, faThumbsDown,
-    faSquarePhone, faMicrophone,
+    faSquarePhone, faMicrophone, faVideoCamera,
     faFaceSmile, faArrowLeft,faTrash,
-    faFile, faImages, faCamera,faBan,
+    faFile, faImages, faCamera,faBan,faImage,
     faSquarePollVertical, faCircleXmark, faBell,
     faStar, faArrowRotateRight, faLock, faCheckDouble, faCheck
 )
