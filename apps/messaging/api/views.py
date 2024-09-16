@@ -13,19 +13,19 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import UploadedFileSerializer, MessageSerializer
 
 import os
-
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from django.db.models import Q
 
 class DialogView(GenericAPIView):
     """Gets the dialogues of a user"""
     permission_classes = [IsAuthenticated]
-    
     def get_file_type(self, file):
-     
         if not file:
             return None
-        
         file_name = str(file)
-        
         if file_name.endswith(('.doc', '.docx', '.pdf')):
             return 'document'
         elif file_name.endswith(('.png', '.jpg', '.jpeg', '.gif')):
@@ -40,22 +40,18 @@ class DialogView(GenericAPIView):
         dialogs = Dialog.objects.filter(
             Q(sender=user) | Q(recepient=user)
         ).select_related('sender', 'recepient').prefetch_related('message_set')
-
+        
         response = []
-
         for dialog in dialogs:
             chat_user = dialog.recepient if dialog.sender == user else dialog.sender
-
             profile = chat_user.profile.url if chat_user.profile else None
-
             messages = dialog.message_set.filter(
                 Q(sender=user, recepient=chat_user) |
                 Q(sender=chat_user, recepient=user)
             ).order_by('-created_at')
-
             unread_count = messages.filter(read=False, recepient=user).count()
             last_message = messages.first()
-
+            
             data = {
                 "chat": chat_user.username,
                 "chat_uuid": chat_user.uuid,
@@ -63,17 +59,14 @@ class DialogView(GenericAPIView):
                 "dialog": dialog.id,
                 "user": user.uuid,
                 "last_message": last_message.text if last_message else None,
-                "last_message_file_type": self.get_file_type(last_message.file) if last_message.file else None,
+                "last_message_file_type": self.get_file_type(last_message.file) if last_message and last_message.file else False,
                 "last_message_sender": last_message.sender.uuid if last_message else None,
                 "unread_count": unread_count,
                 "date": last_message.created_at if last_message else None
             }
-
             response.append(data)
-
+        
         return Response(response, status=status.HTTP_200_OK)
-
-
 
 class MessageListView(GenericAPIView):
     """Requests for all messages or creates new"""

@@ -14,7 +14,7 @@
                         <img :src="file" alt="file" />
                     </template>
                     <template v-else-if="isVideo(file)">
-                        <video width="320" height="240" autoplay loop>
+                        <video width="320" height="240" controls loop>
                             <source :src="file" type="video/mp4" />
                         </video>
                     </template>
